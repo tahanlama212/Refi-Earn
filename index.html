@@ -3,57 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mini App Tes Bro</title>
-  <!-- Ini WAJIB: script resmi dari Telegram -->
+  <title>Refi Earn - Tap & Earn</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-      background: #000; /* gelap biar keren */
-      color: white;
-      text-align: center;
-    }
-    h1 { color: #00ff00; }
-    #info { margin-top: 30px; font-size: 18px; }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Halo Bro! 🔥</h1>
-  <p>Ini Mini App pertama lo!</p>
-  <div id="info">Loading data dari Telegram...</div>
 
-  <script>
-    // Ini yang bikin Mini App nyambung ke Telegram
-    if (window.Telegram?.WebApp) {
-      const tg = window.Telegram.WebApp;
+  <!-- Header / Balance -->
+  <div class="header">
+    <h1>Refi Earn</h1>
+    <div class="balance">
+      <span id="coinBalance">0</span> <span class="coin-icon">🪙</span>
+    </div>
+    <div id="energy">Energy: <span id="energyValue">1000</span>/1000</div>
+  </div>
 
-      // Bilang ke Telegram: "Siap nih, tampilin!"
-      tg.ready();
+  <!-- Tap Area -->
+  <div class="tap-area" id="tapArea">
+    <div class="character" id="character">🤑</div>
+    <div id="tapEffect" class="tap-effect">+1</div>
+  </div>
 
-      // Bikin full height biar keliatan bagus
-      tg.expand();
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <button class="nav-btn active" data-page="home">Home</button>
+    <button class="nav-btn" data-page="tasks">Tasks</button>
+    <button class="nav-btn" data-page="profile">Profile</button>
+    <button class="nav-btn" data-page="wallet">Wallet</button>
+  </div>
 
-      // Ambil data user (nama, username, dll)
-      const user = tg.initDataUnsafe?.user;
+  <!-- Pages -->
+  <div id="pages">
+    <!-- Home sudah di atas (tap area) -->
 
-      if (user) {
-        document.getElementById('info').innerHTML = `
-          Nama: ${user.first_name} ${user.last_name || ''}<br>
-          Username: @${user.username || 'belum ada'}<br>
-          ID: ${user.id}
-        `;
-      } else {
-        document.getElementById('info').innerHTML = 'Gak bisa ambil data user nih...';
-      }
+    <!-- Tasks Page -->
+    <div id="tasksPage" class="page hidden">
+      <h2>Daily Tasks</h2>
+      <div class="task">
+        <p>Join Channel Refi</p>
+        <button onclick="claimTask('joinChannel')">Claim 500 🪙</button>
+      </div>
+      <div class="task">
+        <p>Invite 1 Friend</p>
+        <button onclick="claimTask('invite')">Claim 1000 🪙</button>
+      </div>
+      <div class="task">
+        <p>Daily Login</p>
+        <button id="dailyLoginBtn" onclick="claimDaily()">Claim 200 🪙</button>
+      </div>
+    </div>
 
-      // Ikutin tema Telegram (dark/light)
-      document.body.style.background = tg.themeParams.bg_color || '#000';
-      document.body.style.color = tg.themeParams.text_color || 'white';
-    } else {
-      document.getElementById('info').innerHTML = 'Buka ini dari Telegram ya bro!';
-    }
-  </script>
+    <!-- Profile Page -->
+    <div id="profilePage" class="page hidden">
+      <h2>Profile</h2>
+      <p id="userName">Nama: Loading...</p>
+      <p id="userId">ID: Loading...</p>
+      <p>Total Earned: <span id="totalEarned">0</span> 🪙</p>
+      <p>Level: <span id="level">1</span></p>
+    </div>
+
+    <!-- Wallet Page -->
+    <div id="walletPage" class="page hidden">
+      <h2>Wallet</h2>
+      <p>Connect TON Wallet</p>
+      <button onclick="alert('Fitur wallet connect coming soon!')">Connect Wallet</button>
+      <p>Balance: <span id="walletBalance">0 TON</span></p>
+      <button onclick="alert('Withdraw coming soon!')">Withdraw</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
