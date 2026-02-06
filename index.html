@@ -4,7 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Refi Earn - Tap & Earn</title>
+  
+  <!-- Telegram Web App SDK (WAJIB) -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  
+  <!-- Monetag SDK Tag - PASTE DARI DASHBOARD LO -->
+  <!-- Contoh: ganti sesuai yang ada di Monetag dashboard lo -->
+  <script async 
+    src="https://js.monetag.com/.../your-sdk-file.js" 
+    data-zone="10575971" 
+    data-sdk="show_10575971">
+  </script>
+  
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,7 +29,7 @@
     <div id="energy">Energy: <span id="energyValue">1000</span>/1000</div>
   </div>
 
-  <!-- Tap Area -->
+  <!-- Tap Area (Home) -->
   <div class="tap-area" id="tapArea">
     <div class="character" id="character">🤑</div>
     <div id="tapEffect" class="tap-effect">+1</div>
@@ -34,8 +45,6 @@
 
   <!-- Pages -->
   <div id="pages">
-    <!-- Home sudah di atas (tap area) -->
-
     <!-- Tasks Page -->
     <div id="tasksPage" class="page hidden">
       <h2>Daily Tasks</h2>
@@ -50,6 +59,10 @@
       <div class="task">
         <p>Daily Login</p>
         <button id="dailyLoginBtn" onclick="claimDaily()">Claim 200 🪙</button>
+      </div>
+      <div class="task">
+        <p>Watch Ad for Extra Coins</p>
+        <button id="watchAdBtn">Watch & Claim 500 🪙</button>
       </div>
     </div>
 
