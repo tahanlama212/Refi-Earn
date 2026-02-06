@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mini App Tes Bro</title>
+  <!-- Ini WAJIB: script resmi dari Telegram -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #000; /* gelap biar keren */
+      color: white;
+      text-align: center;
+    }
+    h1 { color: #00ff00; }
+    #info { margin-top: 30px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h1>Halo Bro! 🔥</h1>
+  <p>Ini Mini App pertama lo!</p>
+  <div id="info">Loading data dari Telegram...</div>
+
+  <script>
+    // Ini yang bikin Mini App nyambung ke Telegram
+    if (window.Telegram?.WebApp) {
+      const tg = window.Telegram.WebApp;
+
+      // Bilang ke Telegram: "Siap nih, tampilin!"
+      tg.ready();
+
+      // Bikin full height biar keliatan bagus
+      tg.expand();
+
+      // Ambil data user (nama, username, dll)
+      const user = tg.initDataUnsafe?.user;
+
+      if (user) {
+        document.getElementById('info').innerHTML = `
+          Nama: ${user.first_name} ${user.last_name || ''}<br>
+          Username: @${user.username || 'belum ada'}<br>
+          ID: ${user.id}
+        `;
+      } else {
+        document.getElementById('info').innerHTML = 'Gak bisa ambil data user nih...';
+      }
+
+      // Ikutin tema Telegram (dark/light)
+      document.body.style.background = tg.themeParams.bg_color || '#000';
+      document.body.style.color = tg.themeParams.text_color || 'white';
+    } else {
+      document.getElementById('info').innerHTML = 'Buka ini dari Telegram ya bro!';
+    }
+  </script>
+</body>
+</html>
