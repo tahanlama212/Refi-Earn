@@ -2,7 +2,7 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-// Ambil data user
+// User info
 const user = tg.initDataUnsafe.user || {};
 document.getElementById('userName').textContent = user.first_name + ' ' + (user.last_name || '');
 document.getElementById('userId').textContent = 'ID: ' + (user.id || 'unknown');
@@ -11,9 +11,9 @@ document.getElementById('userId').textContent = 'ID: ' + (user.id || 'unknown');
 let totalEarned = 0;
 let todayCount = 0;
 
-// Simple localStorage untuk simpan data (biar gak reset pas tutup)
+// Simpan data biar gak hilang
 function loadData() {
-  const saved = localStorage.getItem('refiEarnData');
+  const saved = localStorage.getItem('refiEarn');
   if (saved) {
     const data = JSON.parse(saved);
     totalEarned = data.total || 0;
@@ -23,7 +23,7 @@ function loadData() {
 }
 
 function saveData() {
-  localStorage.setItem('refiEarnData', JSON.stringify({
+  localStorage.setItem('refiEarn', JSON.stringify({
     total: totalEarned,
     today: todayCount
   }));
@@ -34,28 +34,34 @@ function updateUI() {
   document.getElementById('todayCount').textContent = todayCount;
 }
 
+// Debug helper
+function logDebug(msg) {
+  document.getElementById('debug').textContent = msg;
+}
+
 // Watch Ad Button
 const watchBtn = document.getElementById('watchAdBtn');
 
 if (watchBtn) {
   watchBtn.addEventListener('click', () => {
     if (todayCount >= 5) {
-      alert('Sudah mencapai limit hari ini (5x). Kembali besok ya!');
+      alert('Limit hari ini tercapai (5x). Kembali besok!');
       return;
     }
 
     watchBtn.disabled = true;
     watchBtn.innerHTML = 'Loading Ad...<br><small>Please wait...</small>';
 
-    // Timeout kalau ads gak muncul
+    logDebug('Memulai ads...');
+
     const timeout = setTimeout(() => {
       watchBtn.disabled = false;
       watchBtn.innerHTML = 'Watch Ad Now<br><small>+500 per ad (max 5x/hari)</small>';
       alert('Ads timeout atau gagal. Coba lagi.');
+      logDebug('Timeout: ads tidak muncul dalam 40 detik');
     }, 40000);
 
-    // Panggil Monetag ads
-    // GANTI show_10575971() sesuai Zone ID lo
+    // Monetag Rewarded Interstitial - FUNCTION DARI DASHBOARD LO
     show_10575971()
       .then(() => {
         clearTimeout(timeout);
@@ -63,12 +69,14 @@ if (watchBtn) {
         totalEarned += 500;
         saveData();
         updateUI();
-        alert('Iklan selesai! +500 berhasil ditambahkan 🔥');
+        alert('Iklan selesai! +500 coins ditambahkan 🔥');
+        logDebug('Sukses: iklan ditonton sampai akhir');
       })
       .catch(err => {
         clearTimeout(timeout);
-        alert('Iklan dibatalkan atau error. Coba lagi nanti.');
+        alert('Iklan dibatalkan atau error: ' + (err.message || 'Unknown'));
         console.error('Monetag error:', err);
+        logDebug('Error: ' + (err.message || 'Tidak diketahui'));
       })
       .finally(() => {
         clearTimeout(timeout);
@@ -82,7 +90,7 @@ if (watchBtn) {
 loadData();
 updateUI();
 
-// Ikut tema Telegram
+// Tema Telegram
 if (tg.themeParams.bg_color) {
   document.body.style.background = tg.themeParams.bg_color;
 }
