@@ -11,7 +11,7 @@ document.getElementById('userId').textContent = 'ID: ' + (user.id || 'unknown');
 let totalEarned = 0;
 let todayCount = 0;
 
-// Simpan data biar gak hilang
+// Load/save data
 function loadData() {
   const saved = localStorage.getItem('refiEarn');
   if (saved) {
@@ -20,6 +20,7 @@ function loadData() {
     todayCount = data.today || 0;
   }
   updateUI();
+  document.getElementById('debug').textContent = 'Debug: Data loaded. Monetag ready? ' + (typeof show_10575971 === 'function' ? 'YES' : 'NO');
 }
 
 function saveData() {
@@ -34,57 +35,101 @@ function updateUI() {
   document.getElementById('todayCount').textContent = todayCount;
 }
 
-// Debug helper
-function logDebug(msg) {
-  document.getElementById('debug').textContent = msg;
+// Function reward umum
+function handleReward() {
+  todayCount++;
+  totalEarned += 500;
+  saveData();
+  updateUI();
+  alert('Iklan selesai! +500 coins 🔥');
 }
 
-// Watch Ad Button
-const watchBtn = document.getElementById('watchAdBtn');
-
-if (watchBtn) {
-  watchBtn.addEventListener('click', () => {
+// Rewarded Interstitial button
+const interstitialBtn = document.getElementById('interstitialBtn');
+if (interstitialBtn) {
+  interstitialBtn.addEventListener('click', () => {
     if (todayCount >= 5) {
-      alert('Limit hari ini tercapai (5x). Kembali besok!');
+      alert('Limit tercapai. Besok lagi!');
       return;
     }
-
-    watchBtn.disabled = true;
-    watchBtn.innerHTML = 'Loading Ad...<br><small>Please wait...</small>';
-
-    logDebug('Memulai ads...');
+    interstitialBtn.disabled = true;
+    interstitialBtn.textContent = 'Loading Interstitial...';
+    document.getElementById('debug').textContent = 'Debug: Calling Rewarded Interstitial';
 
     const timeout = setTimeout(() => {
-      watchBtn.disabled = false;
-      watchBtn.innerHTML = 'Watch Ad Now<br><small>+500 per ad (max 5x/hari)</small>';
-      alert('Ads timeout atau gagal. Coba lagi.');
-      logDebug('Timeout: ads tidak muncul dalam 40 detik');
+      interstitialBtn.disabled = false;
+      interstitialBtn.textContent = 'Rewarded Interstitial';
+      alert('Timeout. Coba lagi.');
     }, 40000);
 
-    // Monetag Rewarded Interstitial - FUNCTION DARI DASHBOARD LO
     show_10575971()
       .then(() => {
         clearTimeout(timeout);
-        todayCount++;
-        totalEarned += 500;
-        saveData();
-        updateUI();
-        alert('Iklan selesai! +500 coins ditambahkan 🔥');
-        logDebug('Sukses: iklan ditonton sampai akhir');
+        handleReward();
+        document.getElementById('debug').textContent = 'Debug: Interstitial success';
       })
       .catch(err => {
         clearTimeout(timeout);
-        alert('Iklan dibatalkan atau error: ' + (err.message || 'Unknown'));
-        console.error('Monetag error:', err);
-        logDebug('Error: ' + (err.message || 'Tidak diketahui'));
+        alert('Gagal: ' + (err.message || 'Unknown'));
+        document.getElementById('debug').textContent = 'Debug: Interstitial error - ' + (err.message || 'Unknown');
       })
       .finally(() => {
         clearTimeout(timeout);
-        watchBtn.disabled = false;
-        watchBtn.innerHTML = 'Watch Ad Now<br><small>+500 per ad (max 5x/hari)</small>';
+        interstitialBtn.disabled = false;
+        interstitialBtn.textContent = 'Rewarded Interstitial';
       });
   });
 }
+
+// Rewarded Popup button
+const popupBtn = document.getElementById('popupBtn');
+if (popupBtn) {
+  popupBtn.addEventListener('click', () => {
+    if (todayCount >= 5) {
+      alert('Limit tercapai. Besok lagi!');
+      return;
+    }
+    popupBtn.disabled = true;
+    popupBtn.textContent = 'Loading Popup...';
+    document.getElementById('debug').textContent = 'Debug: Calling Rewarded Popup';
+
+    const timeout = setTimeout(() => {
+      popupBtn.disabled = false;
+      popupBtn.textContent = 'Rewarded Popup';
+      alert('Timeout. Coba lagi.');
+    }, 40000);
+
+    show_10575971('pop')
+      .then(() => {
+        clearTimeout(timeout);
+        handleReward();
+        document.getElementById('debug').textContent = 'Debug: Popup success';
+      })
+      .catch(err => {
+        clearTimeout(timeout);
+        alert('Gagal: ' + (err.message || 'Unknown'));
+        document.getElementById('debug').textContent = 'Debug: Popup error - ' + (err.message || 'Unknown');
+      })
+      .finally(() => {
+        clearTimeout(timeout);
+        popupBtn.disabled = false;
+        popupBtn.textContent = 'Rewarded Popup';
+      });
+  });
+}
+
+// In-App Interstitial (otomatis, no reward)
+show_10575971({
+  type: 'inApp',
+  inAppSettings: {
+    frequency: 2,
+    capping: 0.1,
+    interval: 30,
+    timeout: 5,
+    everyPage: false
+  }
+});
+document.getElementById('debug').textContent += ' | In-App called';
 
 // Init
 loadData();
