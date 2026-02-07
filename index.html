@@ -4,25 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Earn Refi</title>
-  
+
   <!-- Telegram Web App SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  
-  <!-- Monetag SDK - GANTI DENGAN YANG DARI DASHBOARD LO -->
-  <!-- Contoh: -->
+
+  <!-- Monetag SDK - PASTE TAG PERSIS DARI DASHBOARD MONETAG LO -->
+  <!-- Contoh placeholder, GANTI SELURUH BARIS INI DENGAN YANG DARI DASHBOARD -->
   <script async 
-    src="https://js.monetag.com/[10575971].js" 
+    src="https://js.monetag.com/xxxxxxxx.js" 
     data-zone="10575971" 
     data-sdk="show_10575971">
   </script>
-  
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="container">
     <h1>Earn Refi</h1>
-    
+
     <div class="total-earned">
       <span>Total Earned</span>
       <div class="amount" id="totalEarned">0</div>
@@ -38,7 +38,7 @@
 
     <div class="info">
       <p>Watch ads to earn real rewards via Monetag</p>
-      <p>Withdraw coming soon (TON / other)</p>
+      <p>Withdraw coming soon</p>
     </div>
 
     <div class="profile">
@@ -46,6 +46,9 @@
       <p id="userId">ID: -</p>
       <p>Today's ads watched: <span id="todayCount">0</span>/5</p>
     </div>
+
+    <!-- Untuk debug cepat -->
+    <p id="debug" style="color: #ffcc00; margin-top: 40px; font-size: 14px;"></p>
   </div>
 
   <script src="script.js"></script>
