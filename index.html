@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Refi Earn - Tap & Earn</title>
+  <title>Earn Refi</title>
   
-  <!-- Telegram Web App SDK (WAJIB) -->
+  <!-- Telegram Web App SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   
-  <!-- Monetag SDK Tag - PASTE DARI DASHBOARD LO -->
-  <!-- Contoh: ganti sesuai yang ada di Monetag dashboard lo -->
+  <!-- Monetag SDK - GANTI DENGAN YANG DARI DASHBOARD LO -->
+  <!-- Contoh: -->
   <script async 
-    src="https://js.monetag.com/.../your-sdk-file.js" 
+    src="https://js.monetag.com/[10575971].js" 
     data-zone="10575971" 
     data-sdk="show_10575971">
   </script>
@@ -20,68 +20,31 @@
 </head>
 <body>
 
-  <!-- Header / Balance -->
-  <div class="header">
-    <h1>Refi Earn</h1>
-    <div class="balance">
-      <span id="coinBalance">0</span> <span class="coin-icon">🪙</span>
-    </div>
-    <div id="energy">Energy: <span id="energyValue">1000</span>/1000</div>
-  </div>
-
-  <!-- Tap Area (Home) -->
-  <div class="tap-area" id="tapArea">
-    <div class="character" id="character">🤑</div>
-    <div id="tapEffect" class="tap-effect">+1</div>
-  </div>
-
-  <!-- Bottom Navigation -->
-  <div class="bottom-nav">
-    <button class="nav-btn active" data-page="home">Home</button>
-    <button class="nav-btn" data-page="tasks">Tasks</button>
-    <button class="nav-btn" data-page="profile">Profile</button>
-    <button class="nav-btn" data-page="wallet">Wallet</button>
-  </div>
-
-  <!-- Pages -->
-  <div id="pages">
-    <!-- Tasks Page -->
-    <div id="tasksPage" class="page hidden">
-      <h2>Daily Tasks</h2>
-      <div class="task">
-        <p>Join Channel Refi</p>
-        <button onclick="claimTask('joinChannel')">Claim 500 🪙</button>
-      </div>
-      <div class="task">
-        <p>Invite 1 Friend</p>
-        <button onclick="claimTask('invite')">Claim 1000 🪙</button>
-      </div>
-      <div class="task">
-        <p>Daily Login</p>
-        <button id="dailyLoginBtn" onclick="claimDaily()">Claim 200 🪙</button>
-      </div>
-      <div class="task">
-        <p>Watch Ad for Extra Coins</p>
-        <button id="watchAdBtn">Watch & Claim 500 🪙</button>
-      </div>
+  <div class="container">
+    <h1>Earn Refi</h1>
+    
+    <div class="total-earned">
+      <span>Total Earned</span>
+      <div class="amount" id="totalEarned">0</div>
+      <span class="coin">🪙</span>
     </div>
 
-    <!-- Profile Page -->
-    <div id="profilePage" class="page hidden">
-      <h2>Profile</h2>
-      <p id="userName">Nama: Loading...</p>
-      <p id="userId">ID: Loading...</p>
-      <p>Total Earned: <span id="totalEarned">0</span> 🪙</p>
-      <p>Level: <span id="level">1</span></p>
+    <div class="main-action">
+      <button id="watchAdBtn" class="big-btn">
+        Watch Ad Now<br>
+        <small>+500 per ad (max 5x/hari)</small>
+      </button>
     </div>
 
-    <!-- Wallet Page -->
-    <div id="walletPage" class="page hidden">
-      <h2>Wallet</h2>
-      <p>Connect TON Wallet</p>
-      <button onclick="alert('Fitur wallet connect coming soon!')">Connect Wallet</button>
-      <p>Balance: <span id="walletBalance">0 TON</span></p>
-      <button onclick="alert('Withdraw coming soon!')">Withdraw</button>
+    <div class="info">
+      <p>Watch ads to earn real rewards via Monetag</p>
+      <p>Withdraw coming soon (TON / other)</p>
+    </div>
+
+    <div class="profile">
+      <h3 id="userName">User</h3>
+      <p id="userId">ID: -</p>
+      <p>Today's ads watched: <span id="todayCount">0</span>/5</p>
     </div>
   </div>
 
